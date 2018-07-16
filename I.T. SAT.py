@@ -1,20 +1,29 @@
 
 from tkinter import *
 
-class Inventory_System:
+
+class LoginScreen:
     def __init__(self, master):
         self.master = master
         master.title("Inventory System")
 
+        self.usern = StringVar()
+        self.usern = Label(master, text="Username:")
+        self.usern.pack()
+
         self.user = StringVar()
-        self.user = Label(master, text="Username:")
+        self.user = Entry(master, option='name')
         self.user.pack()
 
+        self.passwo = StringVar()
+        self.passwo = Label(master, text="Password:")
+        self.passwo.pack()
+
         self.passw = StringVar()
-        self.passw = Label(master, text="Password:")
+        self.passw = Entry(master, option='pass')
         self.passw.pack()
 
-        self.login_button = Button(master, text="Login", command=master.login)
+        self.login_button = Button(master, text="Login", command=self.Login)
         self.login_button.pack()
 
         self.close_button = Button(master, text="Close", command=master.quit)
@@ -26,8 +35,12 @@ class Inventory_System:
             if name in line:
                 for line in users:
                     if name in line:
-                        print(line)
+                        self.CreateWindow()
 
+    def CreateWindow(self):
+        self.master.withdraw()
+        self.newWindow = Toplevel(self.master)
+        Main = MainScreen(self.newWindow)
 
     def SearchFunction(name, self):
         print('Search function')
@@ -44,14 +57,16 @@ class Inventory_System:
         quantity = input('Enter quantity: ')
         description = input('Enter description: ')
         file.write(item)
-        file.write(' ')
+        file.write(', ')
         file.write(quantity)
-        file.write(' ')
+        file.write(', ')
         file.write(description)
         file.write('\n')
         return
 
+class MainScreen:
+    def __init__(self, master):
 
 root = Tk()
-my_gui = Inventory_ System(root)
+#my_gui = Inventory_System(root)
 root.mainloop()
