@@ -1,0 +1,289 @@
+#Import the stuff to begin the GUI
+from tkinter import *
+
+
+#Login Screen for GUI
+class LoginScreen:
+    def __init__(self, master):
+        self.master = master
+        master.title("Inventory System")
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Username:")
+        self.usern.pack()
+        self.usern.grid(row=1, column=0)
+
+        #Gives user ability to enter username
+        self.user = StringVar()
+        self.user = Entry(master)
+        self.user.grid(row=1, column=1)
+
+        #Adds text to specify entry
+        self.passwo = StringVar()
+        self.passwo = Label(master, text="Password:")
+        self.passwo.grid(row=2, column=0)
+
+        #Gives user ability to enter password
+        self.passw = StringVar()
+        self.passw = Entry(master)
+        self.passw.grid(row=2, column=1)
+
+        #Adds an image to the GUI
+        img = PhotoImage(open("yes.txt"))
+        panel = Label(root, image = img)
+        panel.pack(side = "top", fill = "both", expand = "yes")
+        root.mainloop()
+
+        #Button that allows user to login
+        self.login_button = Button(master, text="Login", command=self.Login)
+        self.login_button.grid(row=3, column=0)
+
+        #Button that allows user to exit program
+        self.close_button = Button(master, text="Close", command=master.quit)
+        self.close_button.grid(row=3, column=1)
+
+    #Checks to see if username and password are correct
+    def Login(self, user, passw, master):
+        users = open ("Users.txt",'r')
+        for line in users:
+            if user in line:
+                if passw in line:
+                    self.CreateMainScreen()
+            else:
+                self.passwo = StringVar()
+                self.passwo = Label(master, text="INCORRECT")
+                self.passwo.grid(row=4, column=0)
+
+
+    #Closes current window and opens the main window
+    def CreateMainScreen(self):
+        self.master.withdraw()
+        self.newWindow = Toplevel(self.master)
+        Main = MainScreen(self.newWindow)
+
+
+
+#Main Screen for GUI
+class MainScreen:
+    def __init__(self, master):
+        self.master = master
+        master.title("Inventory System")
+
+        self.search = StringVar()
+        self.search = Label(master, text="Search:")
+        self.search.grid(row=2, column=1)
+
+        self.SearchFunc = StringVar()
+        self.SearchFunc = Entry(master, option='search')
+        self.SearchFunc.grid(row=2, column=1)
+
+        self.Search_button = Button(master, text="Search", command=self.CreateInfoScreen)
+        self.Search_button.grid(row=2, column=1)
+
+        #Adds an image to the GUI# MUST FIX
+        img = PhotoImage(open("yes.txt"))
+        panel = Label(root, image = img)
+        panel.pack(side = "bottom", fill = "both", expand = "yes")
+        root.mainloop()
+
+        self.Stock_button = Button(master, text="Stock", command=self.CreateStockScreen())
+        self.Stock_button.grid(row=2, column=1)
+
+        self.Logout_button = Button(master, text="Logout", command=self.CreateLoginScreen())
+        self.Logout_button.grid(row=2, column=1)
+
+        self.close_button = Button(master, text="Close", command=master.quit)
+        self.close_button.pack()
+
+
+    def CreateLoginScreen(self):
+        self.master.withdraw()
+        self.newWindow = Toplevel(self.master)
+        Log = LoginScreen(self.newWindow)
+
+
+    def CreateInfoScreen(self):
+        self.master.withdraw()
+        self.newWindow = Toplevel(self.master)
+        Log = InfoScreen(self.newWindow)
+
+
+    def CreateStockScreen(self):
+        self.master.withdraw()
+        self.newWindow = Toplevel(self.master)
+        Log = StockScreen(self.newWindow)
+
+
+
+class StockScreen:
+    def __init__(self, master):
+        self.master = master
+        master.title("Inventory System")
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="STOCK")
+        self.usern.pack()
+        self.usern.grid(row=0, column=1)
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Item name:")
+        self.usern.pack()
+        self.usern.grid(row=1, column=0)
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Description:")
+        self.usern.pack()
+        self.usern.grid(row=2, column=0)
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Procedure:")
+        self.usern.pack()
+        self.usern.grid(row=3, column=0)
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Image Directory:")
+        self.usern.pack()
+        self.usern.grid(row=4, column=0)
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Creator Name:")
+        self.usern.pack()
+        self.usern.grid(row=5, column=0)
+
+        #Adds text to specify entry
+        self.usern = StringVar()
+        self.usern = Label(master, text="Date Created:")
+        self.usern.pack()
+        self.usern.grid(row=6, column=0)
+
+    def Stock(self):
+        file = open ("Stock.txt",'a')
+        item = input('Enter a name: ')
+        quantity = input('Enter quantity: ')
+        description = input('Enter description: ')
+        file.write(item)
+        file.write(', ')
+        file.write(quantity)
+        file.write(', ')
+        file.write(description)
+        file.write('\n')
+        return
+
+
+
+class InfoScreen:
+    def __init__(self, master):
+        self.master = master
+        master.title("Inventory System")
+
+        #Adds text to specify entry
+        self.TInfo = StringVar()
+        self.TInfo = Label(master, text="INFO")
+        self.TInfo.pack()
+        self.TInfo.grid(row=0, column=1)
+
+        #Adds text to specify entry
+        self.TName = StringVar()
+        self.TName = Tk.Combobox(master, text="Name:")
+        self.TName.pack()
+        self.TName.grid(row=1, column=0)
+
+        #Adds text to specify entry
+        self.Search = StringVar()
+        self.Search = Tk.Combobox(master, command=self.SearchFunction)
+        self.Search.pack()
+        self.Search.grid(row=1, column=1)
+
+        #Adds text to specify entry
+        self.TItem = StringVar()
+        self.TItem = Label(master, text="Item name:")
+        self.TItem.pack()
+        self.TItem.grid(row=2, column=0)
+
+        #Adds name from file
+        self.Name = StringVar()
+        self.Name = Label(master, text=self.Name.get)
+        self.Name.pack()
+        self.Name.grid(row=2, column=1)
+
+        #Adds text to specify entry
+        self.TDesc = StringVar()
+        self.TDesc = Label(master, text="Description:")
+        self.TDesc.pack()
+        self.TDesc.grid(row=3, column=0)
+
+        #Adds description from file
+        self.Desc = StringVar()
+        self.Desc = Label(master, text=self.Description.get)
+        self.Desc.pack()
+        self.Desc.grid(row=3, column=1)
+
+        #Adds text to specify entry
+        self.TProc = StringVar()
+        self.TProc = Label(master, text="Procedure:")
+        self.TProc.pack()
+        self.TProc.grid(row=4, column=0)
+
+        #Adds procedure from file
+        self.Proc = StringVar()
+        self.Proc = Label(master, text=self.Procedure.get)
+        self.Proc.pack()
+        self.Proc.grid(row=4, column=1)
+
+        #Adds text to specify entry
+        self.TImage = StringVar()
+        self.TImage = Label(master, text="Image")
+        self.TImage.pack()
+        self.TImage.grid(row=5, column=0)
+
+        #Adds image from file
+        self.Img = StringVar()
+        self.Img = Label(master, text=self.ImgDir.get)
+        self.Img.pack()
+        self.Img.grid(row=5, column=1)
+
+        #Adds text to specify entry
+        self.TCr = StringVar()
+        self.TCr = Label(master, text="Creator Name:")
+        self.TCr.pack()
+        self.TCr.grid(row=6, column=0)
+
+        #Adds creator name from file
+        self.Cr = StringVar()
+        self.Cr = Label(master, text=self.Creator.get)
+        self.Cr.pack()
+        self.Cr.grid(row=6, column=1)
+
+        #Adds text to specify entry
+        self.TDate = StringVar()
+        self.TDate = Label(master, text="Date Created:")
+        self.TDate.pack()
+        self.TDate.grid(row=7, column=0)
+
+        #Adds date from file
+        self.Date = StringVar()
+        self.Date = Label(master, text=self.Date.get)
+        self.Date.pack()
+        self.Date.grid(row=7, column=1)
+
+    def SearchFunction(name, self):
+        print('Search function')
+        with open("Stock.txt") as f:
+            for line in f:
+                if name in line:
+                    line = "item"
+
+
+        return
+
+
+root = Tk()
+my_gui = LoginScreen(root)
+root.mainloop()
