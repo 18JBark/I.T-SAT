@@ -1,0 +1,141 @@
+#Import the stuff to begin the GUI
+from tkinter import *
+
+
+class InfoScreen:
+        def __init__(self, master):
+            self.master = master
+            master.title("Inventory System")
+
+            #Adds text to specify entry
+            self.TInfo = Label(master, text="INFO")
+            self.TInfo.grid(row=0, column=1)
+
+            #Adds text to specify entry
+            self.TItem = Label(master, text="Name:")
+            self.TItem.grid(row=1, column=0)
+
+            #Adds text to specify entry
+            self.Item = StringVar()
+            self.IItem = Entry(master, textvariable=self.Item)
+            self.IItem.grid(row=1, column=1, columnspan=2)
+
+            #User toggles this to begin search
+            self.Search = Button(master, text='Search', command=self.SearchFunction)
+            self.Search.grid(row=1, column=4, columnspan=2)
+
+            self.Logout_button = Button(master, text="Logout", command=lambda:self.CreateLoginScreen())
+            self.Logout_button.grid(row=0, column=0)
+
+            self.Logout_button = Button(master, text=" Order ", command=lambda:self.Order())
+            self.Logout_button.grid(row=9, column=0)
+
+            #Adds text to specify entry
+            self.TName = Label(master, text="Item name:")
+            self.TName.grid(row=2, column=0)
+
+            #Adds text to specify entry
+            self.TDesc = Label(master, text="Description:")
+            self.TDesc.grid(row=3, column=0)
+
+            #Adds text to specify entry
+            self.TProc = Label(master, text="Procedure:")
+            self.TProc.grid(row=4, column=0)
+
+            #Adds text to specify entry
+            self.TImage = Label(master, text="Image")
+            self.TImage.grid(row=5, column=0)
+
+            #Adds an image to the GUI
+            #self.image = PhotoImage(open('Stock.txt'))
+            #panel = Label(root, image = self.Image)
+            #panel.pack(row=2, column=4, columnspan=3)
+            #root.mainloop()
+
+            #Adds text to specify entry
+            self.TCr = Label(master, text="Creator Name:")
+            self.TCr.grid(row=6, column=0)
+
+            #Adds text to specify entry
+            self.TDate = Label(master, text="Date Created:")
+            self.TDate.grid(row=7, column=0)
+
+            #Adds text to specify entry
+            self.TStock = Label(master, text="Stock Remaining:")
+            self.TStock.grid(row=8, column=0)
+
+
+
+        def SearchFunction(self):
+            file = open ("Stock.txt",'r')
+            array = []
+
+            Item = self.Item.get()
+            if Item == (''):
+                print('no')
+
+            else:
+                for line in file:
+                    if Item in line:
+                        array.append([line])
+                        array.split()
+                        line.split('\n')
+                        #line = [line]
+
+                        #line = csv.reader(line)
+                        #array.append(line)
+
+                        #print('soon')
+                        Name = array[0]
+                        print(array[0])
+                        Desc = array[1]
+                        Proc = array[2]
+                        #self.Image = array[3]
+                        Cr = array[4]
+                        Date = array[5]
+                        number = array[6]
+                        #print('die')
+                        print(line)
+
+                #Adds name from file
+                        self.Name = Label(self.master, text=Name)
+                        self.Name.grid(row=2, column=1, columnspan=2)
+
+                #Adds description from file
+                        self.Desc = Label(self.master, text=Desc)
+                        self.Desc.grid(row=3, column=1, columnspan=2)
+
+                #Adds procedure from file
+                        self.Proc = Label(self.master, text=Proc)
+                        self.Proc.grid(row=4, column=1, columnspan=2)
+
+                #Adds creator name from file
+                        self.Cr = Label(self.master, text=Cr)
+                        self.Cr.grid(row=6, column=1, columnspan=2)
+
+                #Adds date from file
+                        self.Date = Label(self.master, text=Date)
+                        self.Date.grid(row=7, column=1, columnspan=2)
+
+
+
+                    #print('Bry Bry')
+
+                    else:
+                        print('great...')
+
+            return
+
+        def CreateLoginScreen(self):
+            print('hi')
+
+        def CreateMainScreen(self):
+            print('hi')
+
+        def Order(self):
+            print('FIX')
+
+
+root = Tk()
+my_gui = InfoScreen(root)
+root.mainloop()
