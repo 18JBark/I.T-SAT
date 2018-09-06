@@ -1,0 +1,488 @@
+#Import the stuff to begin the GUI
+from tkinter import *
+
+
+#This class forces the user to enter their
+#login details to be able to progress
+class LoginScreen:
+    def __init__(self, master):
+        self.master = master
+        master.title("Inventory System")
+
+        #This changes the windows to be global,
+        #so that they are usable from all other windows in the program
+        global MainScreen
+        MainScreen = self.MainScreen
+        global StockScreen
+        StockScreen = self.StockScreen
+        global InfoScreen
+        InfoScreen = self.InfoScreen
+
+        #Adds text to specify entry
+        self.Tuser = Label(master, text="Username:")
+        self.Tuser.grid(row=1, column=0)
+
+        #Gives user ability to enter username
+        self.user = StringVar()
+        self.Iuser = Entry(master, textvariable=self.user)
+        self.Iuser.grid(row=1, column=1)
+
+        #Adds text to specify entry
+        self.Tpassw = Label(master, text="Password:")
+        self.Tpassw.grid(row=2, column=0)
+
+        #Gives user ability to enter password
+        self.passw = StringVar()
+        self.Ipassw = Entry(master, textvariable=self.passw)
+        self.Ipassw.grid(row=2, column=1)
+
+        #Adds an image to the GUI
+        #img = PhotoImage(open("Users.txt"))
+        #panel = Label(root, image = img)
+        #panel.pack(side = "top", fill = "both", expand = "yes")
+        #root.mainloop()
+
+        #Button that allows user to login
+        loginbutton = Button(master, text="Login", command=lambda: self.Login())
+        loginbutton.grid(row=3, column=0)
+
+        #Button that allows user to exit program
+        close_button = Button(master, text="Close", command=master.quit)
+        close_button.grid(row=3, column=2)
+
+        #Checks to see if username and password are correct
+    def Login(self):
+        users = open("Users.txt", 'r+')
+        user = self.user.get()
+        passw = self.passw.get()
+
+        array = []
+
+        if user == (''):
+            print('no')
+
+        else:
+            for line in users:
+                if user in line:
+                    array = line.split()
+
+                    #Assigns the values to the variables
+                    Name = array[0]
+                    Passwo = array[1]
+
+                    #If the name/ password equals the file's values, then the user continues to the MainScreen
+                    if Name == user:
+                        if Passwo == passw:
+                            self.CreateMainScreen()
+
+
+                    #If either of the if lines fail, these will fire, telling the user that they messed up
+                        else:
+                            self.passwo = Label(self.master, text="INCORRECT")
+                            self.passwo.grid(row=4, column=1)
+                    else:
+                        self.passwo = Label(self.master, text="INCORRECT")
+                        self.passwo.grid(row=4, column=1)
+
+        return
+
+    #Closes current window and opens the MainScreen
+    def CreateMainScreen(self):
+        self.master.withdraw()
+        window = Toplevel(root)
+        frame = self.MainScreen(window)
+
+
+
+    #This class is a window that allows the user to
+    #easily find and choose which screen they want to go to after
+    class MainScreen:
+        def __init__(self, master):
+            self.master = master
+            master.title("Inventory System")
+
+            #This is just text
+            self.search = Label(master, text="WELCOME")
+            self.search.grid(row=1, column=2)
+
+            #This is filler space
+            self.search = Label(master, text="                                    ")
+            self.search.grid(row=2, column=2)
+
+            #This is filler space
+            self.search = Label(master, text="                                    ")
+            self.search.grid(row=3, column=2)
+
+            self.search = Label(master, text="                                    ")
+            self.search.grid(row=5, column=2)
+
+            #This is filler space
+            self.search = Label(master, text="              ")
+            self.search.grid(row=0, column=4)
+
+            #
+            self.Search_button = Button(master, text="Info", command=lambda:self.CreateInfoScreen(InfoScreen))
+            self.Search_button.grid(row=4, column=3)
+
+            #Adds an image to the GUI# MUST FIX
+            #img = PhotoImage(open("yes.txt"))
+            #panel = Label(root, image = img)
+            #panel.pack(side = "bottom", fill = "both", expand = "yes")
+            #root.mainloop()
+
+            self.Stock_button = Button(master, text="Stock", command=lambda:self.CreateStockScreen(StockScreen))
+            self.Stock_button.grid(row=4, column=2)
+
+            self.Logout_button = Button(master, text="Logout", command=lambda:self.CreateLoginScreen(LoginScreen))
+            self.Logout_button.grid(row=4, column=1)
+
+            self.close_button = Button(master, text="Close", command=master.quit)
+            self.close_button.grid(row=0, column=0)
+
+        #Closes current window and opens the LoginScreen
+        def CreateLoginScreen(self, LoginScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = LoginScreen(window)
+
+        #Closes current window and opens the InfoScreen
+        def CreateInfoScreen(self, InfoScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = InfoScreen(window)
+
+        #Closes current window and opens the StockScreen
+        def CreateStockScreen(self, StockScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = StockScreen(window)
+
+
+    #This class allows the user to input data into the various fields
+    #and then enter it into the .txt file
+    class StockScreen:
+        def __init__(self, master):
+            self.master = master
+            master.title("Inventory System")
+
+            #Adds text to specify entry
+            self.TStock = Label(master, text="STOCK")
+            self.TStock.grid(row=0, column=1)
+
+            #Adds text to specify entry
+            self.TItem = Label(master, text="Item name:")
+            self.TItem.grid(row=1, column=0)
+
+            #This is the entry field for the variable below
+            self.Item = StringVar()
+            self.IItem = Entry(master, textvariable=self.Item)
+            self.IItem.grid(row=1, column=1, columnspan=2)
+
+            #Adds text to specify entry
+            self.TDesc = Label(master, text="Description:")
+            self.TDesc.grid(row=2, column=0)
+
+            #This is the entry field for the variable below
+            self.Desc = StringVar()
+            self.IDesc = Entry(master, textvariable=self.Desc)
+            self.IDesc.grid(row=2, column=1, columnspan=2)
+
+            #Adds text to specify entry
+            self.TProc = Label(master, text="Procedure Pg. #:")
+            self.TProc.grid(row=3, column=0)
+
+            #This is the entry field for the variable below
+            self.Proc = StringVar()
+            self.IProc = Entry(master, textvariable=self.Proc)
+            self.IProc.grid(row=3, column=1, columnspan=2)
+
+            #Adds text to specify entry
+            self.TImg = Label(master, text="Image Directory:")
+            self.TImg.grid(row=4, column=0)
+
+            #This is the entry field for the variable below
+            self.Img = StringVar()
+            self.IImg = Entry(master, textvariable=self.Img)
+            self.IImg.grid(row=4, column=1, columnspan=2)
+
+            #Adds text to specify entry
+            self.TCr = Label(master, text="Creator Name:")
+            self.TCr.grid(row=5, column=0)
+
+            #This is the entry field for the variable below
+            self.Cr = StringVar()
+            self.ICr = Entry(master, textvariable=self.Cr)
+            self.ICr.grid(row=5, column=1, columnspan=2)
+
+            #Adds text to specify entry
+            self.TDate = Label(master, text="Date Created:")
+            self.TDate.grid(row=6, column=0)
+
+            #This is the entry field for the variable below
+            self.Date = StringVar()
+            self.Date = Entry(master, textvariable=self.Date)
+            self.Date.grid(row=6, column=1, columnspan=2)
+
+            #Adds text to specify entry
+            self.TDate = Label(master, text="Current Stock:")
+            self.TDate.grid(row=7, column=0)
+
+            #This is the entry field for the variable below
+            self.Amount = IntVar()
+            self.IAmount = Entry(master, textvariable=self.Amount)
+            self.IAmount.grid(row=7, column=1, columnspan=2)
+
+            #This button, when clicked, triggers the 'Stock' function
+            self.Stock_button = Button(master, text="Enter", command=lambda: self.Stock())
+            self.Stock_button.grid(row=8, column=2)
+
+            #This button, when clicked, triggers the 'CreateLoginScreen' function,
+            #which changes the window back to the LoginScreen
+            self.login_button = Button(master, text="       Logout       ", command=lambda: self.CreateLoginScreen(LoginScreen))
+            self.login_button.grid(row=0, column=0)
+
+            #This button, when clicked, triggers the 'CreateMainScreen' function,
+            #which changes the window back to the MainScreen
+            self.login_button = Button(master, text="Main Screen", command=lambda: self.CreateMainScreen(MainScreen))
+            self.login_button.grid(row=0, column=2)
+
+            #This button, when clicked, triggers the program to quit
+            self.login_button = Button(master, text="Exit", command=master.quit)
+            self.login_button.grid(row=8, column=0)
+
+        #Collects the data entered into the various fields and enters it into the .txt file
+        def Stock(self):
+            file = open ("Stock.txt",'a')
+            item = self.Item.get()
+            desc = self.Desc.get()
+            proc = self.Proc.get()
+            img = self.Img.get()
+            cr = self.Cr.get()
+            date = self.Date.get()
+            amount = self.Amount.get()
+            file.write(item)
+            file.write(' ')
+            file.write(str(desc))
+            file.write(' ')
+            file.write(str(proc))
+            file.write(' ')
+            file.write(str(img))
+            file.write(' ')
+            file.write(str(cr))
+            file.write(' ')
+            file.write(str(date))
+            file.write(' ')
+            file.write(str(amount))
+            file.write('\n')
+
+        #Closes current window and opens the LoginScreen
+        def CreateLoginScreen(self, LoginScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = LoginScreen(window)
+
+        #Closes current window and opens the MainScreen
+        def CreateMainScreen(self,  MainScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = MainScreen(window)
+
+
+
+    class InfoScreen:
+        def __init__(self, master):
+            self.master = master
+            master.title("Inventory System")
+
+            #Adds text to specify entry
+            self.TInfo = Label(master, text="INFO")
+            self.TInfo.grid(row=0, column=1)
+
+            #Adds text to specify entry
+            self.TItem = Label(master, text="Name:")
+            self.TItem.grid(row=1, column=0)
+
+            #Adds text to specify entry
+            self.Item = StringVar()
+            self.IItem = Entry(master, textvariable=self.Item)
+            self.IItem.grid(row=1, column=1, columnspan=2)
+
+            #User toggles this to begin search
+            self.Search = Button(master, text='Search', command=self.SearchFunction)
+            self.Search.grid(row=1, column=4, columnspan=2)
+
+            #This button, when clicked, triggers the 'CreateLoginScreen' function,
+            #which changes the window back to the LoginScreen
+            self.Logout_button = Button(master, text="Logout", command=lambda:self.CreateLoginScreen(LoginScreen))
+            self.Logout_button.grid(row=0, column=0)
+
+            #This button, when clicked, triggers the 'CreateMainScreen' function,
+            #which changes the window back to the MainScreen
+            self.Logout_button = Button(master, text="Main Screen", command=lambda:self.CreateMainScreen(MainScreen))
+            self.Logout_button.grid(row=0, column=4)
+
+            #This button, when clicked, triggers the 'Order' function
+            self.Logout_button = Button(master, text=" Order ", command=lambda:self.Order())
+            self.Logout_button.grid(row=9, column=0)
+
+            #Adds text to specify entry
+            self.TName = Label(master, text="Item name:")
+            self.TName.grid(row=2, column=0)
+
+            #Adds text to specify entry
+            self.TDesc = Label(master, text="Description:")
+            self.TDesc.grid(row=3, column=0)
+
+            #Adds text to specify entry
+            self.TProc = Label(master, text="Procedure:")
+            self.TProc.grid(row=4, column=0)
+
+            #Adds text to specify entry
+            self.TImage = Label(master, text="Image")
+            self.TImage.grid(row=5, column=0)
+
+            #Adds text to specify entry
+            self.TCr = Label(master, text="Creator Name:")
+            self.TCr.grid(row=6, column=0)
+
+            #Adds text to specify entry
+            self.TDate = Label(master, text="Date Created:")
+            self.TDate.grid(row=7, column=0)
+
+            #Adds text to specify entry
+            self.TStock = Label(master, text="Stock Remaining:")
+            self.TStock.grid(row=8, column=0)
+
+
+        #Allows user to search for an item and
+        #then have the details of the item to be shown in the GUI
+        def SearchFunction(self):
+            file = open ("Stock.txt",'r')
+            array = []
+
+            Item = self.Item.get()
+            if Item == (''):
+                #Adds text to specify entry
+                self.TStock = Label(self.master, text="ERROR: NOTHING ENTERED")
+                self.TStock.grid(row=9, column=1, columnspan=2)
+
+            else:
+                for line in file:
+                    if Item in line:
+                        array = line.split()
+
+                        #Assigns the values to the variables
+                        Name = array[0]
+                        Desc = array[1]
+                        Proc = array[2]
+                        #self.Image = array[3]
+                        Cr = array[4]
+                        Date = array[5]
+                        number = array[6]
+
+                        #Adds name from file
+                        self.Name = Label(self.master, text=Name)
+                        self.Name.grid(row=2, column=1, columnspan=2)
+
+                        #Adds description from file
+                        self.Desc = Label(self.master, text=Desc)
+                        self.Desc.grid(row=3, column=1, columnspan=2)
+
+                        #Adds procedure from file
+                        self.Proc = Label(self.master, text=Proc)
+                        self.Proc.grid(row=4, column=1, columnspan=2)
+
+                        #Adds creator name from file
+                        self.Cr = Label(self.master, text=Cr)
+                        self.Cr.grid(row=6, column=1, columnspan=2)
+
+                        #Adds date from file
+                        self.Date = Label(self.master, text=Date)
+                        self.Date.grid(row=7, column=1, columnspan=2)
+
+                        #Changes the variable 'number' to an integer
+                        number = int(number)
+
+                        #Sets the UI variable 'Date' to say "In Stock"
+                        if number >= 99:
+                            self.Date = Label(self.master, text='In Stock')
+                            self.Date.grid(row=8, column=1, columnspan=2)
+
+                        #Sets the UI variable 'Date' to say "In Stock"
+                        if 100 > number >= 50 < 100:
+                            self.Date = Label(self.master, text='Running Low')
+                            self.Date.grid(row=8, column=1, columnspan=2)
+
+                        if 50 > number > 0:
+                            self.Date = Label(self.master, text='Desperately Low')
+                            self.Date.grid(row=8, column=1, columnspan=2)
+
+                        if number == 0:
+                            self.Date = Label(self.master, text='Out of Stock')
+                            self.Date.grid(row=8, column=1, columnspan=2)
+
+                        else:
+                            if number > 100:
+                                self.Date = Label(self.master, text='Currently Unknown')
+                                self.Date.grid(row=8, column=1, columnspan=2)
+
+            return
+
+        #Allows the user to order items, this function actually just sets the stock # to 1 less
+        #THIS DOESN'T WORK
+        def Order(self):
+            file = open ("Stock.txt",'r+')
+            Item = self.Item.get()
+            array = []
+            if Item == (''):
+                #Tells user that they screwed up, also prevents error when nothing entered
+                self.TStock = Label(self.master, text="ERROR: NOTHING ENTERED")
+                self.TStock.grid(row=9, column=2, columnspan=2)
+
+            else:
+                for line in file:
+                    if Item in line:
+                        array = line.split()
+                        Name = array[0]
+                        Desc = array[1]
+                        Proc = array[2]
+                        #Image = array[3]
+                        Cr = array[4]
+                        Date = array[5]
+                        Number = array[6]
+                        number = int(Number)
+                        print('?')
+                        for line in file:
+                            if number <= 0:
+                                #Adds text to specify entry
+                                self.TStock = Label(self.master, text="No more items available")
+                                self.TStock.grid(row=9, column=2, columnspan=2)
+
+                            else:
+                                #print('why')
+                                ##line1 = line[:-1]
+                                #Number1 = (str(number-1))
+                                #line1 = line
+                                #line1 = (Name + ' ' + Desc + ' ' + Proc + ' ' + Cr + ' ' + Date + ' ' + Number1)
+                                #line.replace(line, line1)
+
+                                self.TStock = Label(self.master, text="Order Complete")
+                                self.TStock.grid(row=9, column=2, columnspan=2)
+
+        #Closes current window and opens the LoginScreen
+        def CreateLoginScreen(self, LoginScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = LoginScreen(window)
+
+        #Closes current window and opens the MainScreen
+        def CreateMainScreen(self, MainScreen):
+            self.master.withdraw()
+            window = Toplevel(root)
+            frame = MainScreen(window)
+
+
+#This is the core stuff to allow the program to function
+root = Tk()
+my_gui = LoginScreen(root)
+root.mainloop()
